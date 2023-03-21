@@ -1,0 +1,38 @@
+#                                                                                               
+# `7MM"""Mq.                    mm                              .M"""bgd   .g8""8q. `7MMF'      
+#   MM   `MM.                   MM                             ,MI    "Y .dP'    `YM. MM        
+#   MM   ,M9 ,pW"Wq.  ,pP"Ybd mmMMmm .P"Ybmmm `7Mb,od8 .gP"Ya  `MMb.     dM'      `MM MM        
+#   MMmmdM9 6W'   `Wb 8I   `"   MM  :MI  I8     MM' "',M'   Yb   `YMMNq. MM        MM MM        
+#   MM      8M     M8 `YMMMa.   MM   WmmmP"     MM    8M"""""" .     `MM MM.      ,MP MM      , 
+#   MM      YA.   ,A9 L.   I8   MM  8M          MM    YM.    , Mb     dM `Mb.    ,dP' MM     ,M 
+# .JMML.     `Ybmd9'  M9mmmP'   `MbmoYMMMMMb  .JMML.   `Mbmmd' P"Ybmmd"    `"bmmd"' .JMMmmmmMMM 
+#                                   6'     dP                                  MMb              
+#                                   Ybmmmd'                                     `bood'          
+#
+# Author: r3d5un <https://github.com/r3d5un
+global:
+  postgresql:
+    auth:
+      username: r3d5un
+      existingSecret: postgres-credentials
+      secretKeys:
+        # Password for the "postgres" admin user
+        adminPasswordKey: postgres-password
+        # Password for the user defined under @param auth.username
+        userPasswordKey: password
+
+# PostgreSQL architecture "standalone" for single node usage
+architecture: standalone
+
+primary:
+  service:
+    type: NodePort
+    nodePorts:
+      postgresql: 31432
+  persistence:
+    enabled: true
+    existingClaim: postgres-pvc
+    size: 50Gi
+# Required for write access on minikube mounted hostpath
+volumePermissions:
+  enabled: true
